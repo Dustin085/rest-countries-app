@@ -1,9 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout.tsx'
+import HomePage from './pages/HomePage.tsx'
+import CountryDetail from './pages/CountryDetailPage.tsx'
 
 const route = createBrowserRouter([
   {
@@ -12,7 +13,11 @@ const route = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <HomePage />,
+      },
+      {
+        path: '/:countryName',
+        element: <CountryDetail />
       },
     ],
   }
