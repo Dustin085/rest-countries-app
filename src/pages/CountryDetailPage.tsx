@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
 
-function CountryDetail() {
+function CountryDetailPage() {
     const params = useParams<{ countryName: string }>()
 
     return (
@@ -9,4 +9,4 @@ function CountryDetail() {
     );
 }
 
-export default CountryDetail;
+export default CountryDetailPage;

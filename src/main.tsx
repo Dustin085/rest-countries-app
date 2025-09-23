@@ -4,7 +4,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout.tsx'
 import HomePage from './pages/HomePage.tsx'
-import CountryDetail from './pages/CountryDetailPage.tsx'
+import CountryDetailPage from './pages/CountryDetailPage.tsx'
 
 const route = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ const route = createBrowserRouter([
       },
       {
         path: '/:countryName',
-        element: <CountryDetail />
+        element: <CountryDetailPage />
       },
     ],
   }
