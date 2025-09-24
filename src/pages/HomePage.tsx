@@ -2,16 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { createAllCountriesQueryOptions } from "@/queryOptions/createAllCountriesQueryOptions";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 function HomePage() {
     const [region, setRegion] = useState("")
 
+    const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
+
     return (
         <div className="px-4 pt-8">
             <RegionFilter region={region} setRegion={setRegion} />
             {region && <p>Filter Region: {region}</p>}
+            {data.map((coutry, index) => (
+                <p key={index}>{coutry.name.common}</p>
+            ))}
         </div>
     );
 }
