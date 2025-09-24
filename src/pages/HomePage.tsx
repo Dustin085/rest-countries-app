@@ -13,11 +13,14 @@ function HomePage() {
 
     const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
 
+    const filteredCountries = region
+        ? data.filter(country => country.region === region)
+        : data
+
     return (
         <div className="px-4 pt-8 pb-16 flex flex-col gap-12">
             <RegionFilter region={region} setRegion={setRegion} />
-            {region && <p>Filter Region: {region}</p>}
-            {data.slice(0, 10).map((coutry, index) => (
+            {filteredCountries.slice(0, 10).map((coutry, index) => (
                 <CountryCard key={index} country={coutry} />
             ))}
         </div>
@@ -26,7 +29,7 @@ function HomePage() {
 
 const regions: string[] = [
     "Africa",
-    "America",
+    "Americas",
     "Asia",
     "Europe",
     "Oceania",
@@ -56,9 +59,7 @@ function RegionFilter({ region, setRegion }: RegionFilterProps) {
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                     <Command>
-                        {/* <CommandInput placeholder="Search framework..." /> */}
                         <CommandList>
-                            {/* <CommandEmpty>No framework found.</CommandEmpty> */}
                             <CommandGroup>
                                 {regions.map((regionInArr) => (
                                     <CommandItem
