@@ -11,6 +11,7 @@ function HomePage() {
     return (
         <div className="px-4 pt-8">
             <RegionFilter region={region} setRegion={setRegion} />
+            {region && <p>Filter Region: {region}</p>}
         </div>
     );
 }

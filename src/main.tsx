@@ -2,14 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import AppLayout from './layouts/AppLayout.tsx'
+import HomeLayout from './layouts/HomeLayout.tsx'
 import HomePage from './pages/HomePage.tsx'
 import CountryDetailPage from './pages/CountryDetailPage.tsx'
+import { changeDarkModeByCondition } from './lib/utils.ts'
 
 const route = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayout />,
+    element: <HomeLayout />,
     children: [
       {
         index: true,
@@ -22,6 +23,8 @@ const route = createBrowserRouter([
     ],
   }
 ])
+
+changeDarkModeByCondition()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
