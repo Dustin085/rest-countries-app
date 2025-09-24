@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { z } from "zod"
 import type { RestCountriesQueryField } from "@/types/restCountriesQueryField";
 
-const defaultQueryFields: RestCountriesQueryField[] = ["name", "population", "capital"]
+const defaultQueryFields: RestCountriesQueryField[] = ["name", "population", "capital", "flags", "region"]
 
 export const CountrySchema = z.object({
     name: z.object({
@@ -17,7 +17,13 @@ export const CountrySchema = z.object({
         )
     }),
     capital: z.array(z.string()),
-    population: z.number()
+    population: z.number(),
+    flags: z.object({
+        png: z.string(),
+        svg: z.string(),
+        alt: z.string()
+    }),
+    region: z.string()
 })
 
 export type Country = z.infer<typeof CountrySchema>

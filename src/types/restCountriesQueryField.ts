@@ -1,1 +1,1 @@
-export type RestCountriesQueryField = "name" | "population" | "capital"
+export type RestCountriesQueryField = "name" | "population" | "capital" | "flags" | "region"

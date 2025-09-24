@@ -1,3 +1,4 @@
+import CountryCard from "@/components/countryCard";
 import { Button } from "@/components/ui/button";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -13,11 +14,11 @@ function HomePage() {
     const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
 
     return (
-        <div className="px-4 pt-8">
+        <div className="px-4 pt-8 pb-16 flex flex-col gap-12">
             <RegionFilter region={region} setRegion={setRegion} />
             {region && <p>Filter Region: {region}</p>}
-            {data.map((coutry, index) => (
-                <p key={index}>{coutry.name.common}</p>
+            {data.slice(0, 10).map((coutry, index) => (
+                <CountryCard key={index} country={coutry} />
             ))}
         </div>
     );
