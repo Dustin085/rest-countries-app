@@ -20,9 +20,11 @@ function HomePage() {
     return (
         <div className="px-4 pt-8 pb-16 flex flex-col gap-12">
             <RegionFilter region={region} setRegion={setRegion} />
-            {filteredCountries.slice(0, 10).map((coutry, index) => (
-                <CountryCard key={index} country={coutry} />
-            ))}
+            <div className="grid grid-cols-1 justify-items-center gap-12">
+                {filteredCountries.slice(0, 10).map((coutry, index) => (
+                    <CountryCard key={index} country={coutry} />
+                ))}
+            </div>
         </div>
     );
 }

@@ -12,7 +12,7 @@ function CountryCard({ country }: { country: Country }) {
                 <CardContent>
                     <CardTitle className="mb-4">{country.name.common}</CardTitle>
                     <CardDescription className="flex flex-col gap-2">
-                        <p><span className="dark:text-text-dark">Population: </span>{country.population}</p>
+                        <p><span className="dark:text-text-dark">Population: </span>{country.population.toLocaleString()}</p>
                         <p><span className="dark:text-text-dark">Region: </span>{country.region}</p>
                         <p><span className="dark:text-text-dark">Capital: </span>{country.capital}</p>
                     </CardDescription>
