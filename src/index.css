@@ -9,6 +9,8 @@
 
   --breakpoint-desktop: 376px;
 
+  --shadow-all-direction: 0px 0px 25px 5px rgba(0, 0, 0, 0.25);
+
   /* Light Mode */
   --color-bg: hsl(0, 0%, 99%); /* Grey 50 */
   --color-text: hsl(200, 15%, 8%); /* Grey 950 */
