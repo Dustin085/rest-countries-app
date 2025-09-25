@@ -85,8 +85,6 @@ function BorderButton({ border }: { border: string }) {
             throw new Error("API type error.");
         }
 
-        console.log(result.data)
-
         if (result.data.length > 1) { throw new Error("Two Countries share the same cca3") }
 
         return result.data[0];

@@ -56,8 +56,6 @@ async function getCountryDetail(countryName: string, fields: RestCountriesQueryF
         throw new Error("API type error.");
     }
 
-    console.log(result.data)
-
     if (result.data.length > 1) { throw new Error("Two Countries share the same name") }
 
     return result.data[0];
