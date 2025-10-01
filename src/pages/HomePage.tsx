@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { createAllCountriesQueryOptions, type Country } from "@/queryOptions/createAllCountriesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, ChevronDown, Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Fuse, { type IFuseOptions } from "fuse.js"
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
@@ -16,6 +16,7 @@ function HomePage() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [region, setRegion] = useState("")
     const [searchTerm, setSearchTerm] = useState(searchParams.get("query") || "")
+    const searchInputRef = useRef<HTMLInputElement>(null)
 
     const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
 
@@ -44,6 +45,7 @@ function HomePage() {
 
     const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        searchInputRef.current?.blur()
         setSearchParams((prev) => {
             const newParams = new URLSearchParams(prev)
             if (searchTerm) {
@@ -64,7 +66,7 @@ function HomePage() {
             <form onSubmit={handleSearchSubmit}>
                 <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2" />
-                    <Input id={"search-country-input"} value={searchTerm} onChange={handleSearchChange} type={"search"} className="pl-12 h-12" placeholder="Search country ..." />
+                    <Input id={"search-country-input"} value={searchTerm} ref={searchInputRef} onChange={handleSearchChange} type={"search"} className="pl-12 h-12" placeholder="Search country ..." />
                 </div>
             </form>
             <RegionFilter region={region} setRegion={setRegion} />
