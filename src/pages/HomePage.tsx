@@ -6,16 +6,18 @@ import { cn } from "@/lib/utils";
 import { createAllCountriesQueryOptions, type Country } from "@/queryOptions/createAllCountriesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, ChevronDown, Search } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import Fuse, { type IFuseOptions } from "fuse.js"
 import { Input } from "@/components/ui/input";
+import { useSearchParams } from "react-router-dom";
+import { regions } from "@/constants/regions";
 
 function HomePage() {
+    const [searchParams, setSearchParams] = useSearchParams()
     const [region, setRegion] = useState("")
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(searchParams.get("query") || "")
 
     const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
-
 
     const filteredCountries = region
         ? data.filter(country => country.region === region)
@@ -31,19 +33,40 @@ function HomePage() {
 
     const fuse = new Fuse(filteredCountries, fuseOptions)
 
-    const fuseResult = searchTerm.trim() ?
-        fuse.search(searchTerm) :
+    const searchQueryFromParams = searchParams.get("query")
+
+    const fuseResult = searchQueryFromParams ?
+        fuse.search(searchQueryFromParams) :
         filteredCountries.map((item, index) => ({
             item: item,
             refIndex: index
         }))
 
+    const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setSearchParams((prev) => {
+            const newParams = new URLSearchParams(prev)
+            if (searchTerm) {
+                newParams.set("query", searchTerm)
+            } else {
+                newParams.delete("query")
+            }
+            return newParams
+        })
+    }
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value)
+    }
+
     return (
         <div className="px-4 pt-8 pb-16 flex flex-col gap-12">
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2" />
-                <Input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-12 h-12" placeholder="Search country ..." />
-            </div>
+            <form onSubmit={handleSearchSubmit}>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Input id={"search-country-input"} value={searchTerm} onChange={handleSearchChange} type={"search"} className="pl-12 h-12" placeholder="Search country ..." />
+                </div>
+            </form>
             <RegionFilter region={region} setRegion={setRegion} />
             <div className="grid grid-cols-1 justify-items-center gap-12">
                 {fuseResult.slice(0, 10).map((result, index) => (
@@ -53,14 +76,6 @@ function HomePage() {
         </div>
     );
 }
-
-const regions: string[] = [
-    "Africa",
-    "Americas",
-    "Asia",
-    "Europe",
-    "Oceania",
-]
 
 interface RegionFilterProps {
     region: string
