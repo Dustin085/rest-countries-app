@@ -6,17 +6,22 @@ import { cn } from "@/lib/utils";
 import { createAllCountriesQueryOptions, type Country } from "@/queryOptions/createAllCountriesQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CheckIcon, ChevronDown, Search } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Fuse, { type IFuseOptions } from "fuse.js"
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
 import { regions } from "@/constants/regions";
+
+const DEFAULT_VISIBLE_COUNT = 10
+const LOAD_MORE_COUNT = 10
 
 function HomePage() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [region, setRegion] = useState("")
     const [searchTerm, setSearchTerm] = useState(searchParams.get("query") || "")
     const searchInputRef = useRef<HTMLInputElement>(null)
+    const [visibleCount, setVisibleCount] = useState(DEFAULT_VISIBLE_COUNT);
+    const loadMoreRef = useRef<HTMLDivElement>(null)
 
     const { data } = useSuspenseQuery(createAllCountriesQueryOptions())
 
@@ -46,6 +51,7 @@ function HomePage() {
     const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         searchInputRef.current?.blur()
+        setVisibleCount(DEFAULT_VISIBLE_COUNT)
         setSearchParams((prev) => {
             const newParams = new URLSearchParams(prev)
             if (searchTerm) {
@@ -61,6 +67,22 @@ function HomePage() {
         setSearchTerm(e.target.value)
     }
 
+    useEffect(() => {
+        const target = loadMoreRef.current
+        if (!target) return
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setVisibleCount(prev => Math.min(prev + LOAD_MORE_COUNT, fuseResult.length))
+            }
+        })
+
+        observer.observe(target)
+
+        return () => {
+            observer.unobserve(target)
+        }
+    }, [fuseResult.length]);
+
     return (
         <div className="px-4 pt-8 pb-16 flex flex-col gap-12">
             <form onSubmit={handleSearchSubmit}>
@@ -71,9 +93,14 @@ function HomePage() {
             </form>
             <RegionFilter region={region} setRegion={setRegion} />
             <div className="grid grid-cols-1 justify-items-center gap-12">
-                {fuseResult.slice(0, 10).map((result, index) => (
+                {fuseResult.slice(0, visibleCount).map((result, index) => (
                     <CountryCard key={index} country={result.item} />
                 ))}
+                {visibleCount < fuseResult.length && (
+                    <div ref={loadMoreRef}>
+                        Loading more...
+                    </div>
+                )}
             </div>
         </div>
     );
