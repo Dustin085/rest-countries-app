@@ -11,6 +11,7 @@ import Fuse, { type IFuseOptions } from "fuse.js"
 import { Input } from "@/components/ui/input";
 import { useSearchParams } from "react-router-dom";
 import { regions } from "@/constants/regions";
+import GoTopButton from "@/components/goTopButton";
 
 const DEFAULT_VISIBLE_COUNT = 10
 const LOAD_MORE_COUNT = 10
@@ -92,7 +93,7 @@ function HomePage() {
                 </div>
             </form>
             <RegionFilter region={region} setRegion={setRegion} />
-            <div className="grid grid-cols-1 justify-items-center gap-12">
+            <div className="grid grid-cols-1 justify-items-center gap-12 desktop:grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
                 {fuseResult.slice(0, visibleCount).map((result, index) => (
                     <CountryCard key={index} country={result.item} />
                 ))}
@@ -102,6 +103,7 @@ function HomePage() {
                     </div>
                 )}
             </div>
+            <GoTopButton targetY={600} />
         </div>
     );
 }

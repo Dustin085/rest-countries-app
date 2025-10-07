@@ -27,7 +27,8 @@ function CountryDetailPage() {
     return (
         <div className="px-6 pt-8 pb-16">
             <Button
-                className="flex items-center bg-bg text-text dark:bg-element-dark dark:text-text-dark rounded-xs shadow-all-direction font-light w-[128px] mb-12" size={"lg"}
+                className="flex items-center bg-bg text-text dark:bg-element-dark dark:text-text-dark rounded-xs shadow-all-direction font-light w-[128px] mb-12 cursor-pointer"
+                size={"lg"}
                 onClick={handleBack}
             >
                 <ArrowLeft />

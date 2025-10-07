@@ -4,10 +4,17 @@ import { Link } from "react-router-dom";
 
 function CountryCard({ country }: { country: Country }) {
     return (
-        <Link className="self-center" to={`/${country.name.official}`}>
-            <Card className="gap-4 pt-0 overflow-hidden w-[275px] self-center rounded-sm pb-9 dark:bg-element-dark">
+        <Link
+            to={`/${country.name.official}`}
+            className="max-w-[275px] w-full"
+        >
+            <Card className="gap-4 pt-0 overflow-hidden self-center rounded-sm pb-9 dark:bg-element-dark">
                 <CardHeader className="px-0">
-                    <img src={country.flags.svg} alt={country.flags.alt} className="aspect-[2/1] object-cover" />
+                    <img
+                        src={country.flags.svg}
+                        alt={country.flags.alt}
+                        className="aspect-[3/2] object-cover"
+                    />
                 </CardHeader>
                 <CardContent>
                     <CardTitle className="mb-4">{country.name.common}</CardTitle>
