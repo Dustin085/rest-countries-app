@@ -93,16 +93,16 @@ function HomePage() {
                 </div>
             </form>
             <RegionFilter region={region} setRegion={setRegion} />
-            <div className="grid grid-cols-1 justify-items-center gap-12 desktop:grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
+            <div className="grid grid-cols-1 justify-items-center gap-12 md:grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
                 {fuseResult.slice(0, visibleCount).map((result, index) => (
                     <CountryCard key={index} country={result.item} />
                 ))}
-                {visibleCount < fuseResult.length && (
-                    <div ref={loadMoreRef}>
-                        Loading more...
-                    </div>
-                )}
             </div>
+            {visibleCount < fuseResult.length && (
+                <div ref={loadMoreRef}>
+                    Loading more...
+                </div>
+            )}
             <GoTopButton targetY={600} />
         </div>
     );

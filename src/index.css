@@ -7,7 +7,7 @@
 @theme {
   --font-nunito-sans: "Nunito Sans", "sans-serif";
 
-  --breakpoint-desktop: 376px;
+  --breakpoint-desktop: 1441px;
 
   --shadow-all-direction: 0px 0px 25px 5px rgba(0, 0, 0, 0.25);
 

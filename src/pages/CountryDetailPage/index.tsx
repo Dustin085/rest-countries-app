@@ -25,39 +25,46 @@ function CountryDetailPage() {
     }
 
     return (
-        <div className="px-6 pt-8 pb-16">
+        <div className="px-6 pt-8 pb-16 desktop:px-18 desktop:pt-16">
             <Button
-                className="flex items-center bg-bg text-text dark:bg-element-dark dark:text-text-dark rounded-xs shadow-all-direction font-light w-[128px] mb-12 cursor-pointer"
+                className="flex items-center bg-bg text-text dark:bg-element-dark dark:text-text-dark rounded-xs shadow-all-direction font-light w-[128px] mb-12 desktop:mb-16 cursor-pointer"
                 size={"lg"}
                 onClick={handleBack}
             >
                 <ArrowLeft />
                 <span className="translate-y-[1px]">Back</span>
             </Button>
-            <img src={data.flags.svg} alt={data.flags.alt} className="mb-10" />
-            <h2 className="text-2xl font-extrabold mb-8">{data.name.common}</h2>
-            <div className="mb-9">
-                <TextWithLabel label={"Native Name"} text={Object.values(data.name.nativeName)[0].common} />
-                <TextWithLabel label={"Population"} text={data.population.toLocaleString()} />
-                <TextWithLabel label={"Region"} text={data.region} />
-                <TextWithLabel label={"Sub Region"} text={data.subregion} />
-                <TextWithLabel label={"Capital"} text={data.capital.join(", ")} />
-            </div>
-            <div className="mb-9">
-                <TextWithLabel label={"Top Level Domain"} text={data.tld.join(", ")} />
-                <TextWithLabel label={"Currencies"} text={Object.values(data.currencies).map(obj => obj.name).join(", ")} />
-                <TextWithLabel label={"Languages"} text={Object.values(data.languages).join(", ")} />
-            </div>
-            <div>
-                <h3 className="text-xl mb-4">Border Countries:</h3>
-                {data.borders.length > 0 ?
-                    <ul className="flex flex-wrap gap-3">
-                        {data.borders.map(border => (
-                            <BorderButton key={border} border={border} />
-                        ))}
-                    </ul> :
-                    <span className="text-muted-foreground">No border country ...</span>
-                }
+            <div className="flex flex-col gap-10 desktop:grid desktop:gap-32 desktop:grid-cols-[1fr_1fr]">
+                {/* flag */}
+                <img src={data.flags.svg} alt={data.flags.alt} className="w-full max-w-[760px]" />
+                <div className="flex flex-col gap-8 desktop:justify-center-safe desktop:max-w-[620px]">
+                    <h2 className="text-2xl font-extrabold">{data.name.common}</h2>
+                    <div className="desktop:flex desktop:justify-between">
+                        <div>
+                            <TextWithLabel label={"Native Name"} text={Object.values(data.name.nativeName)[0].common} />
+                            <TextWithLabel label={"Population"} text={data.population.toLocaleString()} />
+                            <TextWithLabel label={"Region"} text={data.region} />
+                            <TextWithLabel label={"Sub Region"} text={data.subregion} />
+                            <TextWithLabel label={"Capital"} text={data.capital.join(", ")} />
+                        </div>
+                        <div>
+                            <TextWithLabel label={"Top Level Domain"} text={data.tld.join(", ")} />
+                            <TextWithLabel label={"Currencies"} text={Object.values(data.currencies).map(obj => obj.name).join(", ")} />
+                            <TextWithLabel label={"Languages"} text={Object.values(data.languages).join(", ")} />
+                        </div>
+                    </div>
+                    <div>
+                        <h3 className="text-xl mb-4">Border Countries:</h3>
+                        {data.borders.length > 0 ?
+                            <ul className="flex flex-wrap gap-3">
+                                {data.borders.map(border => (
+                                    <BorderButton key={border} border={border} />
+                                ))}
+                            </ul> :
+                            <span className="text-muted-foreground">No border country ...</span>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     );
