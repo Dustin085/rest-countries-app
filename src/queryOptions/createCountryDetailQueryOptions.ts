@@ -40,7 +40,7 @@ export const CountryDetailSchema = z.object({
 export function createCountryDetailQueryOptions(countryName: string) {
     return queryOptions(
         {
-            queryKey: [countryName],
+            queryKey: ["country-detail", countryName],
             queryFn: () => getCountryDetail(countryName)
         }
     )

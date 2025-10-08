@@ -1,4 +1,4 @@
-import { StrictMode, Suspense } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
@@ -7,7 +7,6 @@ import HomePage from './pages/HomePage/index.tsx'
 import CountryDetailPage from './pages/CountryDetailPage/index.tsx'
 import { changeDarkModeByCondition } from './lib/utils.ts'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import CountryDetailLoading from './pages/CountryDetailPage/loading.tsx'
 
 const route = createBrowserRouter([
   {
@@ -20,11 +19,7 @@ const route = createBrowserRouter([
       },
       {
         path: '/:countryName',
-        element: (
-          <Suspense fallback={<CountryDetailLoading />}>
-            <CountryDetailPage />
-          </Suspense>
-        ),
+        element: <CountryDetailPage />,
       },
     ],
   }

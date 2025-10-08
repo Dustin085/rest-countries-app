@@ -3,11 +3,23 @@ import { Button } from "@/components/ui/button";
 import { createCountryDetailQueryOptions } from "@/queryOptions/createCountryDetailQueryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
+import { Suspense } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import z from "zod";
-
+import CountryDetailLoading from "./loading";
+import { getCountryNameBycca3 } from "@/lib/utils";
 
 function CountryDetailPage() {
+    const { countryName } = useParams();
+
+    // 這樣每當 URL 改變，React 會認為這是新 component
+    return (
+        <Suspense fallback={<CountryDetailLoading />} key={countryName}>
+            <CountryDetailPageInner />
+        </Suspense>
+    )
+}
+
+function CountryDetailPageInner() {
     const params = useParams<{ countryName: string }>()
 
     if (params.countryName === undefined) { throw Error("Country Name in Params should be defined") }
@@ -57,8 +69,8 @@ function CountryDetailPage() {
                         <h3 className="text-xl mb-4">Border Countries:</h3>
                         {data.borders.length > 0 ?
                             <ul className="flex flex-wrap gap-3">
-                                {data.borders.map(border => (
-                                    <BorderButton key={border} border={border} />
+                                {data.borders.map(cca3Code => (
+                                    <BorderButton key={cca3Code} cca3Code={cca3Code} />
                                 ))}
                             </ul> :
                             <span className="text-muted-foreground">No border country ...</span>
@@ -70,33 +82,11 @@ function CountryDetailPage() {
     );
 }
 
-function BorderButton({ border }: { border: string }) {
+function BorderButton({ cca3Code }: { cca3Code: string }) {
     const { data } = useSuspenseQuery({
-        queryKey: [border + "CountryName"],
-        queryFn: () => getCountryNameBycca3(border)
+        queryKey: ["country-name", cca3Code],
+        queryFn: () => getCountryNameBycca3(cca3Code)
     })
-
-    async function getCountryNameBycca3(cca3: string) {
-        const CountryNameSchema = z.object({
-            name: z.object({
-                common: z.string(),
-                official: z.string(),
-            })
-        })
-
-        const response = await fetch(`https://restcountries.com/v3.1/alpha?codes=${cca3}&fields=name`)
-        const data = await response.json()
-        const result = CountryNameSchema.array().safeParse(data)
-
-        if (!result.success) {
-            console.error("API type error:", z.treeifyError(result.error));
-            throw new Error("API type error.");
-        }
-
-        if (result.data.length > 1) { throw new Error("Two Countries share the same cca3") }
-
-        return result.data[0];
-    }
 
     return (
         <Button asChild className="bg-bg text-text dark:bg-element-dark dark:text-text-dark rounded-xs shadow-all-direction font-light">
